@@ -1,9 +1,10 @@
-#include <iostream>
-using namespace std;
+#include "Principal.h"
 
 int main()
 {
-	cout << "Hello Another World" << endl;
+	Principal principal;
+
+	system("pause");
 
 	return 0;
 }

@@ -1,0 +1,14 @@
+{
+    "books": [
+        {
+            "genero": "Isekai",
+            "id": 4,
+            "nome": "Arudina"
+        },
+        {
+            "genero": "B",
+            "id": 1,
+            "nome": "A"
+        }
+    ]
+}
