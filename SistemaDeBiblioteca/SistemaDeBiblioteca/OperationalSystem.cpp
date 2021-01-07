@@ -11,17 +11,41 @@ OperationalSystem::~OperationalSystem()
 
 void OperationalSystem::cadastrarLivro(int id, string nome, string genero)
 {
+	bool fileExist = true, fileEmpty = false;
+
 	ifstream in("../SistemaDeBiblioteca/SaveFile/bookshelf.json");
 	// Testa se o arquivo existe
 	if (!in.good())
 	{
 		throw "[!] SistemaDeBiblioteca/SaveFile/bookshelf.json file doesn't exist.";
-		exit(EXIT_FAILURE);
+		fileExist = false;
 	}
 	// Testa se o arquivo ta vazio
 	in.seekg(0, std::ios::end);
 	if (!in.tellg())
-		throw "[!] SistemaDeBiblioteca/SaveFile/bookshelf.json file is empty.";
+	{
+		try
+		{
+			json jFile;
+			jFile["books"] = { 
+				{
+					{"id", 0}, {"nome", "Arudina"}, {"genero", "Isekai"} 
+				},
+			};
+			
+			ofstream out("../SistemaDeBiblioteca/SaveFile/bookshelf.json", ios::out | ios::trunc);
+			out.exceptions(ios::badbit);
+
+			out << setw(4) << jFile << endl;
+			out.close();
+		}
+		catch (std::ofstream::failure e)
+		{
+			std::cerr << "[!] Error writing SistemaDeBiblioteca/SaveFile/bookshelf.json.";
+			std::cerr << e.what() << std::endl;
+			exit(EXIT_FAILURE);
+		}
+	}
 	in.seekg(0, std::ios::beg);
 
 	json j;
@@ -63,6 +87,8 @@ void OperationalSystem::cadastrarLivro(int id, string nome, string genero)
 	out.close();
 }
 
+//------------------------------------------------LISTAR--------------------------------------------------------
+
 void OperationalSystem::listarLivro()
 {
 	ifstream in("../SistemaDeBiblioteca/SaveFile/bookshelf.json");
@@ -103,6 +129,8 @@ void OperationalSystem::listarLivro()
 	
 	in.close();
 }
+
+//------------------------------------------------RETIRAR--------------------------------------------------------
 
 void OperationalSystem::retirarLivro(int id, string nome, string genero)
 {
